@@ -20,23 +20,45 @@ var DOWN = false;
 
 function move() {
 	
+	console.log(player.x);
+	console.log(canvas.width);
+
+
 	if(LEFT) { 
+
+		if ( player.x <= 0 ){
+			return;
+		}
+
 		player.x -= player.speed;
 	}
 	if(UP) { 
+
+		if ( player.y <= 0 ){
+			return;
+		}
+
 		player.y -= player.speed;
 	}	
 	if(RIGHT) {
+
+		if ( player.x >= (canvas.width) ){
+			return;
+		}
+
 		player.x += player.speed;	
 	}
 	if(DOWN) {
+
+		if ( player.y >= canvas.height - 20 ){
+			return;
+		}
+
 		player.y += player.speed;	
 	}	
 }
 
 document.onkeydown = function(e) {
-
-	console.log(e.keyCode);
 
 	if(e.keyCode == 37) LEFT = true;
 	if(e.keyCode == 38) UP = true;
