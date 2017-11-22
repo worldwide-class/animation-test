@@ -5,8 +5,8 @@ var canvas = {width:300, height:300 };
 var score = 0;
 
 var player = {
-	x:canvas.width/2,
-	y:canvas.height-100,
+	x: canvas.width/2,
+	y: canvas.height-100,
 	speed: 3
 };
 
@@ -20,8 +20,8 @@ var DOWN = false;
 
 function move() {
 	
-	console.log(player.x);
-	console.log(canvas.width);
+	// console.log(player.x);
+	// console.log(canvas.width);
 
 
 	if(LEFT) { 
@@ -86,6 +86,7 @@ function clearCanvas() {
 function ship(x,y) {
 	var x = player.x;
 	var y = player.y;
+
 	ctx.fillStyle = "#FFFFFF";
 
 	ctx.beginPath();
@@ -95,6 +96,21 @@ function ship(x,y) {
     ctx.fill();
 }
 
+// Player ship's laser
+
+function laser() {
+	var x = player.x;
+	var y = player.y;
+
+
+	ctx.beginPath();
+		ctx.moveTo(x, y);
+		ctx.strokeStyle = 'red';
+		ctx.lineWidth = 5;
+		ctx.lineTo(x, 0);
+		ctx.stroke()
+}
+
 // update
 
 setInterval (update, 10);
@@ -102,5 +118,6 @@ setInterval (update, 10);
 function update() {
 	clearCanvas();
 	ship();
-    move();
+	laser();
+		move();
 }
