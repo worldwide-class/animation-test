@@ -14,6 +14,7 @@ var LEFT = false;
 var RIGHT = false;
 var UP = false; 
 var DOWN = false;
+var FIRE = false;
 
 
 ////// Arrow keys //////
@@ -58,19 +59,27 @@ function move() {
 	}	
 }
 
+function laser() {
+	if (FIRE) {
+		fireLaser();
+	}
+}
+
 document.onkeydown = function(e) {
 
 	if(e.keyCode == 37) LEFT = true;
 	if(e.keyCode == 38) UP = true;
 	if(e.keyCode == 39) RIGHT = true;
 	if(e.keyCode == 40) DOWN = true;
-}
+	if(e.keyCode == 32) FIRE = true;
+ }
 
 document.onkeyup = function(e) {
 	if(e.keyCode == 37) LEFT = false;
 	if(e.keyCode == 38) UP = false;
 	if(e.keyCode == 39) RIGHT = false;
 	if(e.keyCode == 40) DOWN = false;
+	if(e.keyCode == 32) FIRE = false;
 }
 
 
@@ -98,7 +107,7 @@ function ship(x,y) {
 
 // Player ship's laser
 
-function laser() {
+function fireLaser() {
 	var x = player.x;
 	var y = player.y;
 
@@ -118,6 +127,6 @@ setInterval (update, 10);
 function update() {
 	clearCanvas();
 	ship();
+	move();
 	laser();
-		move();
 }
