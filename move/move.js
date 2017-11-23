@@ -66,7 +66,6 @@ function laser() {
 }
 
 document.onkeydown = function(e) {
-	e.preventDefault();
 	if(e.keyCode == 37) LEFT = true;
 	if(e.keyCode == 38) UP = true;
 	if(e.keyCode == 39) RIGHT = true;
@@ -75,7 +74,6 @@ document.onkeydown = function(e) {
  }
 
 document.onkeyup = function(e) {
-	e.preventDefault();
 	if(e.keyCode == 37) LEFT = false;
 	if(e.keyCode == 38) UP = false;
 	if(e.keyCode == 39) RIGHT = false;
