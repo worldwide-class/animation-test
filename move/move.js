@@ -1,6 +1,6 @@
 // JavaScript Document
 
-////// Variables //////
+// Game Variables
 var canvas = { width:1200, height:800 };
 var score = 0;
 
@@ -24,7 +24,7 @@ var gorgon = {
 	stopped : true
 };
 
-
+// Controller Assignments
 var LEFT = false; 
 var RIGHT = false;
 var UP = false; 
@@ -32,8 +32,27 @@ var DOWN = false;
 var SPACE = false;
 var XKEY = false;
 
+// Utility Functions
+function getRandomIntWithParams(min, max) {
+  min = Math.ceil(max);
+  max = Math.floor(min);
+  return Math.floor(Math.random() * (max - min)) + min;	
+}
 
-////// Arrow keys //////
+function getRandomIntHorizontalWidth() {
+  min = Math.ceil(canvas.width);
+  max = Math.floor(0);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function getRandomVerticalInt() {
+  min = Math.ceil(canvas.height);
+  max = Math.floor(0);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+
+// Move the ship
 function move() {
 	if(LEFT) { 
 		if ( player.x <= 0 ){
@@ -61,13 +80,13 @@ function move() {
 	}
 }
 
-
 function laser() {
 	if (SPACE) {
 		fireRocket();
 	}
 }
 
+// Key Commands
 document.onkeydown = function(e) {
 	if(e.keyCode == 37) LEFT = true;
 	if(e.keyCode == 38) UP = true;
@@ -75,7 +94,6 @@ document.onkeydown = function(e) {
 	if(e.keyCode == 40) DOWN = true;
 	if(e.keyCode == 88) XKEY = true;
  }
-
 document.onkeyup = function(e) {
 	if(e.keyCode == 37) LEFT = false;
 	if(e.keyCode == 38) UP = false;
@@ -83,15 +101,11 @@ document.onkeyup = function(e) {
 	if(e.keyCode == 40) DOWN = false;
 	if(e.keyCode == 88) XKEY = false;
 }
-
 document.onkeypress = function(e) {
 	if (e.keyCode == 32) {
 		fireRocket();
 	}
 }
-
-
-////// other functions //////
 
 function blammo(){
 	if (XKEY) {
@@ -99,12 +113,12 @@ function blammo(){
 	}
 }
 
-//function to clear canvas
+// Reset canvas
 function clearCanvas() {
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 }
 
-// Draw Player ship.
+// Draw our sick ass ship
 function ship(x,y) {
 	var x = player.x;
 	var y = player.y;
@@ -116,28 +130,17 @@ function ship(x,y) {
     ctx.fill();
 }
 
+// Push new Rocket Into Array
 function fireRocket() {
-
-	// console.log(activeRockets)
-
-		rocket.x = player.x;
-		rocket.y = player.y;
-		var newRocketIndex = activeRockets.length + 1;
-
-		var newRocket = new drawRocket(newRocketIndex);
-		console.log(newRocket.y)
-		// newRocket.beginPath();
-		// newRocket.moveTo(rocket.x, rocket.y);
-		// newRocket.fillStyle = "red";
-		// newRocket.arc(rocket.x, rocket.y, 3, 0, Math.PI*2, true);
-		// newRocket.fill();
-		// newRocket.closePath();
-		activeRockets.push(newRocket);
-
+	rocket.x = player.x;
+	rocket.y = player.y;
+	var newRocketIndex = activeRockets.length + 1;
+	var newRocket = new drawRocket(newRocketIndex);
+	activeRockets.push(newRocket);
 }
 
+// Create a Rocket
 function drawRocket(index) {
-
 	this.x = player.x;
 	this.y = player.y;
 	ctx.beginPath();
@@ -148,6 +151,7 @@ function drawRocket(index) {
 	ctx.closePath();
 }
 
+// Draw the rockets on the screen
 function reDrawRockets(index) {
 	ctx.beginPath();
 	ctx.moveTo(activeRockets[index].x, activeRockets[index].y);
@@ -157,16 +161,15 @@ function reDrawRockets(index) {
 	ctx.closePath();
 }
 
+// redraw Rockets Interval
 function moveRockets() {
-
 	for (var i = 0; i < activeRockets.length; i++) {
 		activeRockets[i].y = activeRockets[i].y - rocket.speed;
 		reDrawRockets(i);
 	}
-
 }
 
-// Player ship's laser
+// Blast that shit
 function fireLaser() {
 	var x = player.x;
 	var y = player.y;
@@ -180,15 +183,10 @@ function fireLaser() {
 
 // Release the Gorgon!!!
 function releaseTheGorgon() {
-
 	if ( gorgon.stopped ) return;
-
 	var verticalPosition = gorgon.y + 3;
 	gorgon.y = verticalPosition;
-
 	ctx.beginPath();
-
-	//var hotizontalPosition = getRandomIntHorizontalWidth();
 	ctx.rect(gorgon.x, gorgon.y, 40, 20);
 	ctx.fillStyle = 'green';
 	ctx.fill();
@@ -196,10 +194,9 @@ function releaseTheGorgon() {
 		gorgon.stopped = true;
 		resetGorgon(1000);
 	};
-
-
 }
 
+// Let the Gorgon take a break
 function resetGorgon (timeout){
 	setTimeout(function(){
 		gorgon.x = getRandomIntHorizontalWidth();
@@ -208,28 +205,8 @@ function resetGorgon (timeout){
 	}, timeout);
 }
 
-function getRandomIntWithParams(min, max) {
-  min = Math.ceil(max);
-  max = Math.floor(min);
-  return Math.floor(Math.random() * (max - min)) + min;	
-}
-
-function getRandomIntHorizontalWidth() {
-  min = Math.ceil(canvas.width);
-  max = Math.floor(0);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
-function getRandomVerticalInt() {
-  min = Math.ceil(canvas.height);
-  max = Math.floor(0);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
-
-
-// update
-setInterval (update, 10);//Moving and Lasers
+// Start the Game!
+setInterval (update, 10);
 resetGorgon(1000);
 
 function update() {
