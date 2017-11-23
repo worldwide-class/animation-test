@@ -17,6 +17,13 @@ var rocket = {
 };
 
 var activeRockets = [];
+var gorgon = {
+	x: 200,
+	y: 200,
+	speed: 2,
+	stopped : true
+};
+
 
 var LEFT = false; 
 var RIGHT = false;
@@ -27,41 +34,31 @@ var XKEY = false;
 
 
 ////// Arrow keys //////
-
 function move() {
-
 	if(LEFT) { 
-
 		if ( player.x <= 0 ){
 			return;
 		}
-
 		player.x -= player.speed;
 	}
 	if(UP) { 
-
 		if ( player.y <= 0 ){
 			return;
 		}
-
 		player.y -= player.speed;
 	}	
 	if(RIGHT) {
-
 		if ( player.x >= (canvas.width) ){
 			return;
 		}
-
 		player.x += player.speed;	
 	}
 	if(DOWN) {
-
 		if ( player.y >= canvas.height - 20 ){
 			return;
 		}
-
 		player.y += player.speed;	
-	}	
+	}
 }
 
 
@@ -111,9 +108,7 @@ function clearCanvas() {
 function ship(x,y) {
 	var x = player.x;
 	var y = player.y;
-
 	ctx.fillStyle = "#FFFFFF";
-
 	ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.lineTo(x+15,y+50);
@@ -172,23 +167,70 @@ function moveRockets() {
 }
 
 // Player ship's laser
-
 function fireLaser() {
 	var x = player.x;
 	var y = player.y;
-
-
 	ctx.beginPath();
-		ctx.moveTo(x, y);
-		ctx.strokeStyle = 'red';
-		ctx.lineWidth = 5;
-		ctx.lineTo(x, 0);
-		ctx.stroke()
+	ctx.moveTo(x, y);
+	ctx.strokeStyle = 'red';
+	ctx.lineWidth = 5;
+	ctx.lineTo(x, 0);
+	ctx.stroke();
 }
 
-// update
+// Release the Gorgon!!!
+function releaseTheGorgon() {
 
-setInterval (update, 10);
+	if ( gorgon.stopped ) return;
+
+	var verticalPosition = gorgon.y + 3;
+	gorgon.y = verticalPosition;
+
+	ctx.beginPath();
+
+	//var hotizontalPosition = getRandomIntHorizontalWidth();
+	ctx.rect(gorgon.x, gorgon.y, 40, 20);
+	ctx.fillStyle = 'green';
+	ctx.fill();
+	if ( gorgon.y == canvas.height - 20 ) {
+		gorgon.stopped = true;
+		resetGorgon(1000);
+	};
+
+
+}
+
+function resetGorgon (timeout){
+	setTimeout(function(){
+		gorgon.x = getRandomIntHorizontalWidth();
+		gorgon.y = 0;
+		gorgon.stopped = false;
+	}, timeout);
+}
+
+function getRandomIntWithParams(min, max) {
+  min = Math.ceil(max);
+  max = Math.floor(min);
+  return Math.floor(Math.random() * (max - min)) + min;	
+}
+
+function getRandomIntHorizontalWidth() {
+  min = Math.ceil(canvas.width);
+  max = Math.floor(0);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function getRandomVerticalInt() {
+  min = Math.ceil(canvas.height);
+  max = Math.floor(0);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+
+
+// update
+setInterval (update, 10);//Moving and Lasers
+resetGorgon(1000);
 
 function update() {
 	clearCanvas();
@@ -197,4 +239,5 @@ function update() {
 	laser();
 	blammo();
 	moveRockets();
+	releaseTheGorgon();
 }
