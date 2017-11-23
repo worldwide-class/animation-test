@@ -13,7 +13,7 @@ var player = {
 var rocket = {
 	x: 0,
 	y: 0,
-	speed: 2.5
+	speed: 3
 };
 
 var activeRockets = [];
@@ -160,7 +160,7 @@ function reDrawRockets(index) {
 function moveRockets() {
 
 	for (var i = 0; i < activeRockets.length; i++) {
-		activeRockets[i].y = activeRockets[i].y - 1;
+		activeRockets[i].y = activeRockets[i].y - rocket.speed;
 		reDrawRockets(i);
 	}
 
