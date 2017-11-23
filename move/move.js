@@ -7,7 +7,7 @@ var score = 0;
 var player = {
 	x: canvas.width/2,
 	y: canvas.height-100,
-	speed: 3
+	speed: 2
 };
 
 var LEFT = false; 
