@@ -9,10 +9,12 @@ body{
 }
 #score{
   color:white;
-  font-size:24px;
+  font-size:28px;
   position:absolute;
   font-family:Arial;
+  color:pink;
   letter-spacing: 2px;
+  padding:20px;
 }
 #deathMessage{
   position: absolute;
