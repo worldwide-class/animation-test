@@ -1,6 +1,16 @@
 body{
 	/*cursor:none;*/
 }
+.float-left{
+  float:left;
+}
+#score{
+  color:white;
+  font-size:24px;
+  position:absolute;
+  font-family:Arial;
+  letter-spacing: 2px;
+}
 #ctx {
 	position:fixed;
 	background: url("images/stars.gif");

@@ -7,22 +7,27 @@ var score = 0;
 var player = {
 	x: canvas.width/2,
 	y: canvas.height-100,
-	speed: 2
+	originalSpeed: 3,
+	speed: 3,
+	boostSpeed: 7
 };
 
 var rocket = {
 	x: 0,
 	y: 0,
-	speed: 3
+	speed: 5
 };
-
 var activeRockets = [];
+
 var gorgon = {
 	x: 200,
 	y: 200,
 	speed: 2,
-	stopped : true
+	stopped : true,
+	width: 40,
+	height: 20
 };
+var activeGorgons = [];
 
 // Controller Assignments
 var LEFT = false; 
@@ -93,6 +98,7 @@ document.onkeydown = function(e) {
 	if(e.keyCode == 39) RIGHT = true;
 	if(e.keyCode == 40) DOWN = true;
 	if(e.keyCode == 88) XKEY = true;
+	if(e.keyCode == 16) player.speed = player.boostSpeed;	
  }
 document.onkeyup = function(e) {
 	if(e.keyCode == 37) LEFT = false;
@@ -100,6 +106,7 @@ document.onkeyup = function(e) {
 	if(e.keyCode == 39) RIGHT = false;
 	if(e.keyCode == 40) DOWN = false;
 	if(e.keyCode == 88) XKEY = false;
+	player.speed = player.originalSpeed;	
 }
 document.onkeypress = function(e) {
 	if (e.keyCode == 32) {
@@ -187,7 +194,7 @@ function releaseTheGorgon() {
 	var verticalPosition = gorgon.y + 3;
 	gorgon.y = verticalPosition;
 	ctx.beginPath();
-	ctx.rect(gorgon.x, gorgon.y, 40, 20);
+	ctx.rect(gorgon.x, gorgon.y, gorgon.width, gorgon.height);
 	ctx.fillStyle = 'green';
 	ctx.fill();
 	if ( gorgon.y == canvas.height - 20 ) {
@@ -205,6 +212,28 @@ function resetGorgon (timeout){
 	}, timeout);
 }
 
+function detectCollision() {
+	for ( var i = 0; i < activeRockets.length; i++){
+		if ( activeRockets[i].x > gorgon.x 
+			&& activeRockets[i].x < gorgon.x + gorgon.width 
+			&& activeRockets[i].y < gorgon.y
+			&& activeRockets[i].y > gorgon.y - gorgon.height) {
+			incrementScore();
+			gorgon.stopped = true;
+			console.log(gorgon);
+			activeRockets.pop(i);
+			resetGorgon();			
+		}
+	}
+}
+
+
+function incrementScore(){
+	score++;
+	document.getElementById('scoreTotal').innerHTML = score;
+}
+
+
 // Start the Game!
 setInterval (update, 10);
 resetGorgon(1000);
@@ -216,5 +245,6 @@ function update() {
 	laser();
 	blammo();
 	moveRockets();
+	detectCollision();
 	releaseTheGorgon();
 }
