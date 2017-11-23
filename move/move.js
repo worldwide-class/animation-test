@@ -3,13 +3,16 @@
 // Game Variables
 var canvas = { width:1200, height:800 };
 var score = 0;
+var firingLaser = false;
 
 var player = {
 	x: canvas.width/2,
 	y: canvas.height-100,
 	originalSpeed: 3,
 	speed: 3,
-	boostSpeed: 7
+	boostSpeed: 7,
+	height:88, //height of the sprite
+	width:62 // width of the sprite
 };
 
 var rocket = {
@@ -106,7 +109,8 @@ document.onkeyup = function(e) {
 	if(e.keyCode == 39) RIGHT = false;
 	if(e.keyCode == 40) DOWN = false;
 	if(e.keyCode == 88) XKEY = false;
-	player.speed = player.originalSpeed;	
+	player.speed = player.originalSpeed;
+	firingLaser = false;
 }
 document.onkeypress = function(e) {
 	if (e.keyCode == 32) {
@@ -194,6 +198,7 @@ function fireLaser() {
 	ctx.lineWidth = 5;
 	ctx.lineTo(x, 0);
 	ctx.stroke();
+	firingLaser = true;
 }
 
 // Release the Gorgon!!!
@@ -229,11 +234,26 @@ function detectCollision() {
 			&& activeRockets[i].y > gorgon.y - gorgon.height) {
 			incrementScore();
 			gorgon.stopped = true;
-			console.log(gorgon);
 			activeRockets.pop(i);
 			resetGorgon();			
 		}
-	}	
+	}
+
+	if ( firingLaser ) {
+		if ( player.x > gorgon.x && player.x < gorgon.x + gorgon.width ) {
+			incrementScore();
+			gorgon.stopped = true;
+			resetGorgon();
+		}
+	}
+
+	if ( gorgon.y >= player.y 
+		&& gorgon.y <= player.y + player.height 
+		&& gorgon.x > player.x 
+		&& gorgon.x <= player.x + player.width) {
+		console.log('you are fucking dead');
+	}
+
 }
 
 
