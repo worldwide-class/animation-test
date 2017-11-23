@@ -251,15 +251,25 @@ function detectCollision() {
 	}
 
 	// For Gorgons Killing Us
-	if ( gorgon.y >= player.y 
-		&& gorgon.y <= (player.y + player.height)
-		&& gorgon.x >= player.x 
-		&& gorgon.x <= (player.x + player.width)) {
+	if ( gorgon.x > (player.x - 20) && gorgon.x < (player.x + 20)&& gorgon.y > player.y) {
 		console.log('you are fucking dead');
 		player.dead = true;
 		clearInterval(gameInterval);
 		showDeathMessage();
 	}
+
+}
+
+function drawShipTracker(){
+	var x = player.x;
+	var y = player.y;	
+	ctx.beginPath();
+	ctx.strokeStyle = 'pink';
+	ctx.moveTo(x,y);
+	ctx.lineTo(x+player.width/2, y+player.height);
+	ctx.lineTo(x-player.width/2, y+player.height);
+	ctx.lineTo(x,y);
+	ctx.stroke();
 
 }
 
@@ -287,4 +297,5 @@ function update() {
 	moveRockets();
 	detectCollision();
 	releaseTheGorgon();
+	drawShipTracker();
 }
