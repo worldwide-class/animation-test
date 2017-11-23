@@ -12,7 +12,8 @@ var player = {
 	speed: 3,
 	boostSpeed: 7,
 	height:88, //height of the sprite
-	width:62 // width of the sprite
+	width:62, // width of the sprite
+	dead : false
 };
 
 var rocket = {
@@ -131,6 +132,7 @@ function clearCanvas() {
 
 // Draw our sick ass ship
 function ship(x,y) {
+	if ( player.dead ) return;
 	var x = player.x - 30;
 	var y = player.y;
 
@@ -229,9 +231,9 @@ function detectCollision() {
 	// For Rockets & Gorgons
 	for ( var i = 0; i < activeRockets.length; i++){
 		if ( activeRockets[i].x > gorgon.x 
-			&& activeRockets[i].x < gorgon.x + gorgon.width 
+			&& activeRockets[i].x < (gorgon.x + gorgon.width)
 			&& activeRockets[i].y < gorgon.y
-			&& activeRockets[i].y > gorgon.y - gorgon.height) {
+			&& activeRockets[i].y > (gorgon.y - gorgon.height)) {
 			incrementScore();
 			gorgon.stopped = true;
 			activeRockets.pop(i);
@@ -239,6 +241,7 @@ function detectCollision() {
 		}
 	}
 
+	// For Laser & Gorgons
 	if ( firingLaser ) {
 		if ( player.x > gorgon.x && player.x < gorgon.x + gorgon.width ) {
 			incrementScore();
@@ -247,11 +250,15 @@ function detectCollision() {
 		}
 	}
 
+	// For Gorgons Killing Us
 	if ( gorgon.y >= player.y 
-		&& gorgon.y <= player.y + player.height 
-		&& gorgon.x > player.x 
-		&& gorgon.x <= player.x + player.width) {
+		&& gorgon.y <= (player.y + player.height)
+		&& gorgon.x >= player.x 
+		&& gorgon.x <= (player.x + player.width)) {
 		console.log('you are fucking dead');
+		player.dead = true;
+		clearInterval(gameInterval);
+		showDeathMessage();
 	}
 
 }
@@ -259,12 +266,16 @@ function detectCollision() {
 
 function incrementScore(){
 	score++;
-	document.getElementById('scoreTotal').innerHTML = score;
+	document.getElementById("scoreTotal").innerHTML = score;
+}
+
+function showDeathMessage(){
+	document.getElementById("deathMessage").className = "visible";
 }
 
 
 // Start the Game!
-setInterval (update, 10);
+var gameInterval = setInterval (update, 10);
 resetGorgon(1000);
 
 function update() {

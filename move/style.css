@@ -1,5 +1,8 @@
 body{
 	/*cursor:none;*/
+  width:100%;
+  position:absolute;
+  overflow:hidden;
 }
 .float-left{
   float:left;
@@ -10,6 +13,13 @@ body{
   position:absolute;
   font-family:Arial;
   letter-spacing: 2px;
+}
+#deathMessage{
+  position: absolute;
+  z-index: 999;
+  text-align:center;
+  margin-top: 150px; 
+  width:100%; 
 }
 #ctx {
 	position:fixed;
@@ -24,6 +34,12 @@ body{
 	left:0;
 	width:100%;
 	height:100%;	
+}
+.hidden{
+  display:none;
+}
+.visible{
+  display:block;
 }
 
 @-webkit-keyframes scroll{
