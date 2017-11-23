@@ -127,14 +127,22 @@ function clearCanvas() {
 
 // Draw our sick ass ship
 function ship(x,y) {
-	var x = player.x;
+	var x = player.x - 30;
 	var y = player.y;
-	ctx.fillStyle = "#FFFFFF";
-	ctx.beginPath();
-    ctx.moveTo(x,y);
-    ctx.lineTo(x+15,y+50);
-    ctx.lineTo(x-15,y+50);
-    ctx.fill();
+
+      var imageObj = new Image();
+
+      imageObj.onload = function() {
+        ctx.drawImage(imageObj, x, y);
+      };
+      imageObj.src = 'images/spshipsprite.png';
+
+	// ctx.fillStyle = "#FFFFFF";
+	// ctx.beginPath();
+	 //    ctx.moveTo(x,y);
+	 //    ctx.lineTo(x+15,y+50);
+	 //    ctx.lineTo(x-15,y+50);
+	 //    ctx.fill();
 }
 
 // Push new Rocket Into Array
@@ -213,6 +221,7 @@ function resetGorgon (timeout){
 }
 
 function detectCollision() {
+	// For Rockets & Gorgons
 	for ( var i = 0; i < activeRockets.length; i++){
 		if ( activeRockets[i].x > gorgon.x 
 			&& activeRockets[i].x < gorgon.x + gorgon.width 
@@ -224,7 +233,7 @@ function detectCollision() {
 			activeRockets.pop(i);
 			resetGorgon();			
 		}
-	}
+	}	
 }
 
 
