@@ -255,7 +255,7 @@ function detectCollision() {
 	}
 
 	// For Gorgons Killing Us
-	if ( gorgon.x > (player.x - 20) && gorgon.x < (player.x + 20)&& gorgon.y > player.y) {
+	if ( gorgon.x > (player.x - 20) && gorgon.x < (player.x + 20)&& gorgon.y > player.y && gorgon.y < player.y + player.height) {
 		console.log('you are fucking dead');
 		player.dead = true;
 		clearInterval(gameInterval);

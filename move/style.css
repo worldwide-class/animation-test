@@ -3,6 +3,7 @@ body{
   width:100%;
   position:absolute;
   overflow:hidden;
+  font-family:Arial;  
 }
 .float-left{
   float:left;
@@ -11,7 +12,6 @@ body{
   color:white;
   font-size:28px;
   position:absolute;
-  font-family:Arial;
   color:pink;
   letter-spacing: 2px;
   padding:20px;
@@ -42,6 +42,9 @@ body{
 }
 .visible{
   display:block;
+}
+#restart {
+  color:white;
 }
 
 @-webkit-keyframes scroll{
