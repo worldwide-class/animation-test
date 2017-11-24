@@ -174,6 +174,10 @@ function drawRocket(index) {
 
 // Draw the rockets on the screen
 function reDrawRockets(index) {
+	if ( activeRockets[index].y == 0 ) {
+		activeRockets.pop(index);
+		return;
+	}
 	ctx.beginPath();
 	ctx.moveTo(activeRockets[index].x, activeRockets[index].y);
 	ctx.fillStyle = "red";
