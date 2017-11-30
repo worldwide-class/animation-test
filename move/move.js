@@ -29,9 +29,26 @@ var gorgon = {
 	speed: 2,
 	stopped : true,
 	width: 40,
-	height: 20
+	height: 20,
+	yFrame: 0,
+	xFrame: 0,
+	waitPeriod: 0
 };
+
 var activeGorgons = [];
+
+var alienBoss = {
+	x: 200,
+	y: 200,
+	speed: 1,
+	stopped : true,
+	width: 40,
+	height: 20,
+	yFrame: 0,
+	xFrame: 0,
+	waitPeriod: 0
+};
+
 
 // Controller Assignments
 var LEFT = false; 
@@ -49,8 +66,8 @@ function getRandomIntWithParams(min, max) {
 }
 
 function getRandomIntHorizontalWidth() {
-  min = Math.ceil(canvas.width);
-  max = Math.floor(0);
+  min = Math.ceil(canvas.width - 300);
+  max = Math.floor(300);
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
@@ -210,12 +227,24 @@ function fireLaser() {
 // Release the Gorgon!!!
 function releaseTheGorgon() {
 	if ( gorgon.stopped ) return;
-	var verticalPosition = gorgon.y + 3;
-	gorgon.y = verticalPosition;
-	ctx.beginPath();
-	ctx.rect(gorgon.x, gorgon.y, gorgon.width, gorgon.height);
-	ctx.fillStyle = 'green';
-	ctx.fill();
+	gorgon.y = gorgon.y + gorgon.speed;
+
+    var imageObj = new Image();
+    imageObj.onload = function() {
+    	var yFrame = gorgon.yFrame * 70;
+    	ctx.drawImage(imageObj, yFrame, 0, 70, 70, gorgon.x, gorgon.y, 48, 60 );
+    }
+   	imageObj.src = 'images/asteroid.png';
+   	if ( gorgon.waitPeriod == 6){
+	   	gorgon.yFrame++;
+	   	gorgon.waitPeriod = 0;
+   	}
+   	if ( gorgon.yFrame == 16 ){
+   		gorgon.yFrame = 0;
+   	}
+
+   	gorgon.waitPeriod++;
+
 	if ( gorgon.y == canvas.height - 20 ) {
 		gorgon.stopped = true;
 		resetGorgon(1000);
@@ -223,13 +252,54 @@ function releaseTheGorgon() {
 }
 
 // Let the Gorgon take a break
-function resetGorgon (timeout){
+function resetGorgon (timeout){ 
 	setTimeout(function(){
 		gorgon.x = getRandomIntHorizontalWidth();
 		gorgon.y = 0;
 		gorgon.stopped = false;
 	}, timeout);
 }
+
+
+function releaseAlienSpecies() {
+	if ( alienBoss.stopped ) return;
+	alienBoss.y = alienBoss.y + alienBoss.speed;
+
+    var imageObj = new Image();
+    imageObj.onload = function() {
+    	var yFrame = alienBoss.yFrame * 70;
+    	console.log(yFrame);
+    	//ctx.drawImage(imageObj, yFrame, 0, 70, 70, alienBoss.x, alienBoss.y, 48, 60 );
+    	ctx.drawImage(imageObj, alienBoss.x, alienBoss.y);
+    }
+   	imageObj.src = 'images/alien.png';
+   	// if ( alienBoss.waitPeriod == 6){
+	   // 	alienBoss.yFrame++;
+	   // 	alienBoss.waitPeriod = 0;
+   	// }
+   	// if ( alienBoss.yFrame == 16 ){
+   	// 	alienBoss.yFrame = 0;
+   	// }
+
+   	// alienBoss.waitPeriod++;
+
+	if ( alienBoss.y == canvas.height - 20 ) {
+		alienBoss.stopped = true;
+		resetAlienBoss(1000);
+		return
+	};	
+}
+
+// Let the Gorgon take a break
+function resetAlienBoss (timeout){ 
+	setTimeout(function(){
+		alienBoss.x = canvas.width/2 - 100;
+		alienBoss.y = 0;
+		alienBoss.stopped = false;
+	}, timeout);
+}
+
+
 
 function detectCollision() {
 	// For Rockets & Gorgons
@@ -281,6 +351,10 @@ function drawShipTracker(){
 function incrementScore(){
 	score++;
 	document.getElementById("scoreTotal").innerHTML = score;
+	if ( score == 5 ){
+		releaseAlienSpecies();
+	}
+
 }
 
 function showDeathMessage(){
@@ -291,6 +365,10 @@ function showDeathMessage(){
 // Start the Game!
 var gameInterval = setInterval (update, 10);
 resetGorgon(1000);
+//resetAlienBoss(1000);
+
+sprites = new Image();
+sprites.src = 'images/GORGON.png';
 
 function update() {
 	clearCanvas();
@@ -302,4 +380,5 @@ function update() {
 	detectCollision();
 	releaseTheGorgon();
 	drawShipTracker();
+	//releaseAlienSpecies();
 }

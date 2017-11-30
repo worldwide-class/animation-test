@@ -46,6 +46,14 @@ body{
 #restart {
   color:white;
 }
+#headsupdisplay{
+    position: absolute;
+    z-index: 999;
+    text-align: center;
+    margin-top: 150px;
+    width: 100%;
+    display:block;
+}
 
 @-webkit-keyframes scroll{
   100%{
